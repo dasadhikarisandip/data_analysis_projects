@@ -1,0 +1,13 @@
+
+# Step 1: Spin up infrastructure
+snowsql -c banking_dev -f 01_setup.sql
+
+# Step 2: (Optional) Upload your local CSV datasets to the Snowflake stage
+snowsql -c banking_dev -q "PUT file://./path/to/customers.csv @banking_db.raw.banking_stage/customers/;"
+snowsql -c banking_dev -q "PUT file://./path/to/transactions.csv @banking_db.raw.banking_stage/transactions/;"
+
+# Step 3: Run the data ingestion COPY pipelines
+snowsql -c banking_dev -f 02_ingestion.sql
+
+# Step 4: Deploy data masking policies and generate analytical insights
+snowsql -c banking_dev -f 03_analysis.sql
